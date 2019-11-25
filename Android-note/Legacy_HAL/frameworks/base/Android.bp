@@ -683,7 +683,7 @@ java_library {
         "android.hardware.wifi-V1.0-java-constants",
         "android.hardware.radio-V1.0-java",
         "android.hardware.usb.gadget-V1.0-java",
-        "vendor.fih.hardware.box-V1.0-java",        
+        "vendor.<vendor_name>.hardware.box-V1.0-java",        
     ],
 
     // Loaded with System.loadLibrary by android.view.textclassifier

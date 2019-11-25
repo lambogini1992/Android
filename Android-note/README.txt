@@ -1,8 +1,8 @@
 *****Driver****
-	- location: kernel/msm-4.9/drivers/fih
-		add new file: fih_btn_test.c
-		modify fih/Makefile:
-				obj-y += fih_btn_test.o
+	- location: kernel/msm-4.9/drivers/<vendor>
+		add new file: <vendor>_btn_test.c
+		modify <vendor<vendor>akefile:
+				obj-y += <vendor>_btn_test.o
 
 *****HAL*****
 
@@ -11,7 +11,7 @@
         -       location: hardware/libhardware/modules/voldown
                         folder "voldown" contain: voldown.c, Android.bp
                         build:
-                                -       location : device/fih_qcom/fih_sdm429_64/device.mk
+                                -       location : device/<vendor>_qcom/<vendor>_sdm429_64/device.mk
 
                                         PRODUCT_PACKAGES += voldown.default
 					PRODUCT_PACKAGES += voldown_tests
@@ -52,3 +52,58 @@ add line in Android.bp
 - Add line in SystemServiceRegistry.java
 	location: frameworks\base\core\java\android\app\SystemServiceRegistry.java
 
+
+
+
+Some other note:
+# PACKAGE=android.hardware.naruto@1.0
+# LOC=
+# make hidl-gen -j64
+# hidl-gen -o $LOC -Lc++-impl -randroid.hardware:hardware/interfaces -randroid.hidl:system/libhidl/transport $PACKAGE
+# hidl-gen -o $LOC -Landroidbp-impl -randroid.hardware:hardware/interfaces -randroid.hidl:system/libhidl/transport $PACKAGE
+
+./hardware/interfaces/update-makefiles.sh
+
+sua file:
+fih_qcom/fih_sdm429_64/sepolicy/hwservice_contexts
+fih_qcom/fih_sdm429_64/sepolicy/hwservice.te
+fih_qcom/fih_sdm429_64/sepolicy/attributes
+Them file
+fih_qcom/fih_sdm429_64/sepolicy/hal_voltest.te
+
+sua file:
+device/fih_qcom/fih_sdm429_64/device.mk
+PRODUCT_PACKAGES += vendor.hardware.voltest@1.0-service
+
+device/qcom/msm8937_64/manifest.xml
+    <!-- Voltest HAL service -->
+    <hal format="hidl">
+        <name>vendor.hardware.voltest</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IVoltest</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+device/qcom/common/vendor_framework_compatibility_matrix.xml:
+    <!-- Voltest HAL Service -->
+    <hal format="hidl" optional="true">
+        <name>vendor.hardware.voltest</name>
+        <version>1.0</version>
+        <interface>
+            <name>IVoltest</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+add  in file /fih_qcom/fih_sdm429_64/sepolicy/file_contexts
+#For Voltest
+/(vendor|system/vendor)/bin/hw/vendor\.hardware\.box@1\.0-service      u:object_r:hal_voltest_default_exec:s0
+
+Generate java:
+hidl-gen -o ./tmp -Ljava -rvendor.hardware:vendor/FIH/interfaces -randroid.hidl:system/libhidl/transport vendor.hardware.voltest@1.0
+
+add in file: device/fih_qcom/fih_sdm429_64/device.mk to build .jar file
+PRODUCT_PACKAGES += vendor.hardware.voltest-V1.0-java

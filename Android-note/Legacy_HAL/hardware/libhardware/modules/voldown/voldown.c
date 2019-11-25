@@ -47,7 +47,7 @@ struct vol_module_t HAL_MODULE_INFO_SYM = {
 		.version_minor = 0,
 		.id = VOL_HARDWARE_MODULE_ID,
 		.name = "vol_module",
-		.author = "tungnt@fih-foxconn.com",
+		.author = "tungnt",
 		.methods = &btn_module_method,
 	},
 };

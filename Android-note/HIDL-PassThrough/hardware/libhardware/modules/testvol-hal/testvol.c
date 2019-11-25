@@ -37,7 +37,7 @@ volume_module_t HAL_MODULE_INFO_SYM = {
 		.version_minor 	= 0,
 		.id		= VOL_HARDWARE_ID,
 		.name		= "testvol",
-		.author		= "tungnt@fih-foxconn.com",
+		.author		= "tungnt",
 		.methods	= &vol_module_methods,
 	},
 
